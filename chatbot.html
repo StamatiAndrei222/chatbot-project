@@ -1,49 +1,100 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Chatbot</title>
-  </head>
-  <body>
-    <div class="js-container"></div>
 
-    <script src="https://unpkg.com/supersimpledev/react.js"></script>
-    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+<head>
+  <title>Chatbot</title>
+</head>
 
-    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
-    <script type="text/babel">
+<body>
+  <div class="js-container"></div>
 
-      function ChatInput() {
-        return (
-          <>
-            <input type="text" placeholder="Type a message..." size="30"/>
-            <button>Send</button>
-          </>
-        );
-      }
+  <script src="https://unpkg.com/supersimpledev/react.js"></script>
+  <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
 
-      function ChatMessage(props) {
-        const message = props.message;
+  <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+  <script type="text/babel">
 
-        return( 
-          <div>
-            {message}
-            <img src="user.png" width="50"/>
-          </div>
-        );
-      }
-
-      const app = (
+    function ChatInput() {
+      return (
         <>
-          <ChatInput />
-          <ChatMessage message="Hello chatbot"/>
-          <ChatMessage message="Hello! How can I help you?"/>
-          <ChatMessage message="What is your name?"/>
-          <ChatMessage message="I am a chatbot."/>
+          <input
+            placeholder="Type a message..."
+            size="30"
+          />
+          <button>Send</button>
         </>
       );
+    }
 
-      const container = document.querySelector('.js-container');
-      ReactDOM.createRoot(container).render(app);
-    </script>
-  </body>
+    //function ChatMessage(props) {
+    function ChatMessage({ message, sender }) {
+      //const message = props.message;
+      //const sender = props.sender;
+      //const { message, sender } = props;
+
+      return (
+        <div>
+          {sender === 'robot' && (
+            <img src="robot.png" width="50" />
+          )}
+          {message}
+          {sender === 'user' && (
+            <img src="user.png" width="50" />
+          )}
+        </div>
+      );
+    }
+
+    function ChatMessages() {
+      const chatMessages = [{
+        message: 'Hello chatbot',
+        sender: 'user',
+        id: 1
+      }, {
+        message: 'Hello! How can I help you?',
+        sender: 'robot',
+        id: 2
+      }, {
+        message: 'What is your name?',
+        sender: 'user',
+        id: 3
+      }, {
+        message: 'I am a chatbot.',
+        sender: 'robot',
+        id: 4
+      }];
+
+      return (
+        <>
+          {chatMessages.map((chatMessage) => {
+            return (
+              <ChatMessage
+                message={chatMessage.message}
+                sender={chatMessage.sender}
+                key={chatMessage.id}
+              />
+            )
+          })};
+        </>
+      );
+    }
+
+    function App() {
+     
+
+      return (
+        <>
+          <ChatInput />
+          <ChatMessages />
+          
+        </>
+      );
+    }
+    const app = <App />;
+
+    const container = document.querySelector('.js-container');
+    ReactDOM.createRoot(container).render(<App />);
+  </script>
+</body>
+
 </html>
